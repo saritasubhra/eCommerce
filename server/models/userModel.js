@@ -14,20 +14,18 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please provide your email."],
       unique: true,
       lowercase: true,
+      trim: true,
       validate: [validator.isEmail, "Please provide a valid email."],
     },
     role: {
       type: String,
-      enum: {
-        values: ["admin", "guide", "user"],
-        message: "{VALUE} is not supported.",
-      },
-      default: "user",
+      enum: ["customer", "admin"],
+      default: "customer",
     },
     password: {
       type: String,
       required: [true, "Please provide a password."],
-      minlength: [8, "Password must have atleast 8 characters."],
+      minlength: [4, "Password must have atleast 4 characters."],
       select: false,
     },
     passwordConfirm: {
@@ -40,6 +38,18 @@ const userSchema = new mongoose.Schema(
         message: "Passwords are not the same.",
       },
     },
+    cartItems: [
+      {
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+      },
+    ],
   },
   {
     timestamps: true,
