@@ -16,10 +16,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, "This field is requied."],
     },
-    image: {
-      type: String,
-      required: [true, "This field is requied."],
-    },
+    // image: {
+    //   type: String,
+    //   required: [true, "This field is requied."],
+    // },
     category: {
       type: String,
       required: [true, "This field is requied."],

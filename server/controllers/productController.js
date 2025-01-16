@@ -38,13 +38,12 @@ const getProduct = async (req, res, next) => {
 
 const createProduct = async (req, res, next) => {
   try {
-    const { prodname, description, price, image, category } = req.body;
+    const { prodname, description, price, category } = req.body;
 
     const newProduct = await Product.create({
       prodname,
       description,
       price,
-      image,
       category,
     });
 
