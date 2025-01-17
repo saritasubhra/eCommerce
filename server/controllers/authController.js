@@ -30,7 +30,7 @@ const signUp = async (req, res, next) => {
 
     res.status(201).json({
       status: "success",
-      user: "User created successsfully",
+      message: "User created successsfully",
     });
   } catch (err) {
     next(err);
