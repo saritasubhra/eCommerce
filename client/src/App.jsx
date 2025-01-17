@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
 import { useAuth } from "./contexts/AuthContext";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   const { auth } = useAuth();
@@ -30,6 +31,7 @@ function App() {
               path="/signup"
               element={auth ? <Navigate to="/" /> : <SignUp />}
             />
+            <Route path="/dashboard" element={<AdminDashboard />} />
           </Routes>
         </div>
         <Toaster />
