@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "../lib/axios";
+import { useAuth } from "../contexts/AuthContext";
 
 function useLogin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -8,6 +9,7 @@ function useLogin() {
     email: "",
     password: "",
   });
+  const { setAuth } = useAuth();
 
   function handleFormData(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,6 +32,7 @@ function useLogin() {
     try {
       const res = await axios.post("/auth/login", formData);
       toast.success(res.data.message);
+      setAuth(res.data.data);
       setFormData({
         email: "",
         password: "",

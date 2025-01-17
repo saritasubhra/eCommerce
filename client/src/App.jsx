@@ -1,11 +1,13 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
+import { useAuth } from "./contexts/AuthContext";
 
 function App() {
+  const { auth } = useAuth();
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
@@ -19,8 +21,14 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/login"
+              element={auth ? <Navigate to="/" /> : <Login />}
+            />
+            <Route
+              path="/signup"
+              element={auth ? <Navigate to="/" /> : <SignUp />}
+            />
           </Routes>
         </div>
         <Toaster />
