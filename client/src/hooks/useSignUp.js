@@ -41,6 +41,7 @@ function useSignUp() {
     try {
       const res = await axios.post("/auth/signup", formData);
       toast.success(res.data.message);
+      localStorage.setItem("eCommercerUser", JSON.stringify(res.data.data));
       setAuth(res.data.data);
       setFormData({
         fullname: "",

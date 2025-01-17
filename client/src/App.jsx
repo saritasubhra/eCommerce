@@ -8,6 +8,7 @@ import { useAuth } from "./contexts/AuthContext";
 
 function App() {
   const { auth } = useAuth();
+
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">

@@ -32,6 +32,7 @@ function useLogin() {
     try {
       const res = await axios.post("/auth/login", formData);
       toast.success(res.data.message);
+      localStorage.setItem("eCommercerUser", JSON.stringify(res.data.data));
       setAuth(res.data.data);
       setFormData({
         email: "",
