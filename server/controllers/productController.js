@@ -1,3 +1,4 @@
+const cloudinary = require("../lib/cloudinary");
 const Product = require("../models/productModel");
 const AppError = require("../utils/appError");
 
@@ -38,12 +39,21 @@ const getProduct = async (req, res, next) => {
 
 const createProduct = async (req, res, next) => {
   try {
-    const { prodname, description, price, category } = req.body;
+    const { prodname, description, price, image, category } = req.body;
+
+    let cloudinaryResponse = null;
+    if (image) {
+      cloudinaryResponse = await cloudinary.uploader.upload(image, {
+        folder: "products",
+      });
+    }
+    console.log(cloudinaryResponse);
 
     const newProduct = await Product.create({
       prodname,
       description,
       price,
+      image: cloudinaryResponse.secure_url ? cloudinaryResponse.secure_url : "",
       category,
     });
 
