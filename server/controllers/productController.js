@@ -4,7 +4,19 @@ const AppError = require("../utils/appError");
 
 const getAllProducts = async (req, res, next) => {
   try {
-    const products = await Product.find();
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    let filterObj = { ...req.query };
+    const excludeFields = ["sort", "limit", "page", "fields"];
+    excludeFields.forEach((el) => delete filterObj[el]);
+    let filterStr = JSON.stringify(filterObj);
+    filterStr = filterStr.replace(
+      /\b(gte|gt|lte|lt)\b/g,
+      (match) => `$${match}`
+    );
+    filterObj = JSON.parse(filterStr);
+    const query = Product.find(filterObj);
+
+    const products = await query;
 
     if (!products) {
       return next(new AppError("No products found", 404));
