@@ -47,7 +47,6 @@ const createProduct = async (req, res, next) => {
         folder: "products",
       });
     }
-    console.log(cloudinaryResponse);
 
     const newProduct = await Product.create({
       prodname,
@@ -60,7 +59,7 @@ const createProduct = async (req, res, next) => {
     res.status(201).json({
       status: "success",
       message: "Product created successfully",
-      newProduct,
+      data: newProduct,
     });
   } catch (err) {
     next(err);
@@ -94,11 +93,18 @@ const updateProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.productID);
+    const product = await Product.findById(req.params.productID);
 
     if (!product) {
       return next(new AppError("No product found with that ID", 404));
     }
+
+    if (product.image) {
+      const publicId = product.image.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(`products/${publicId}`);
+    }
+
+    await Product.findByIdAndDelete(req.params.productID);
 
     res.status(200).json({
       status: "success",

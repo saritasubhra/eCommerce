@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
@@ -34,15 +33,8 @@ mongoose
   .then(() => console.log("DB connection successful!"))
   .catch((err) => console.log("ERROR", err));
 
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: "Too many requests from this IP, please try again in an hour!",
-});
-
 app.use(cors(corsOptions));
 app.use(helmet());
-app.use("/api", limiter);
 app.use(express.json());
 app.use(cookieParser());
 app.use(mongoSanitize());

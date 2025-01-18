@@ -1,25 +1,20 @@
 import { motion } from "framer-motion";
 import { Trash, Star } from "lucide-react";
 import { useProduct } from "../contexts/ProductContext";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
 import axios from "../lib/axios";
+import toast from "react-hot-toast";
 
 function ProductsList() {
   const { products, setProducts } = useProduct();
-
-  useEffect(() => {
-    async function getAllProducts() {
-      try {
-        const res = await axios.get("/products");
-        toast.success(res.data.message);
-        setProducts(res.data.data);
-      } catch (error) {
-        console.log(error.response.data.message);
-      }
+  async function handleDelete(id) {
+    try {
+      const res = await axios.delete(`/products/${id}`);
+      toast.success(res.data.message);
+      setProducts((prev) => prev.filter((ele) => ele._id !== id));
+    } catch (error) {
+      console.log(error.response.data.message);
     }
-    getAllProducts();
-  }, []);
+  }
   return (
     <motion.div
       className="bg-gray-800 shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto"
@@ -105,7 +100,7 @@ function ProductsList() {
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button
-                  // onClick={() => deleteProduct(product._id)}
+                  onClick={() => handleDelete(product._id)}
                   className="text-red-400 hover:text-red-300"
                 >
                   <Trash className="h-5 w-5" />
