@@ -12,7 +12,6 @@ function ProductProvider({ children }) {
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useProduct() {
   const context = useContext(ProductContext);
   if (!context) throw new Error("Context used outside of provider.");

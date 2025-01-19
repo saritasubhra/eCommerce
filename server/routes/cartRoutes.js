@@ -1,9 +1,10 @@
 const express = require("express");
-const { addToCart } = require("../controllers/cartController");
+const { addToCart, getCartItems } = require("../controllers/cartController");
 const { protect } = require("../controllers/authController");
 
 const router = express.Router();
 
-router.post("/", protect, addToCart);
+router.use(protect);
+router.route("/").get(getCartItems).post(addToCart);
 
 module.exports = router;

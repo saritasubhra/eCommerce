@@ -24,4 +24,18 @@ const addToCart = async (req, res, next) => {
   }
 };
 
-module.exports = { addToCart };
+const getCartItems = async (req, res, next) => {
+  try {
+    const { cartItems } = req.user;
+
+    res.status(200).json({
+      status: "success",
+      results: cartItems.length,
+      data: cartItems,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { addToCart, getCartItems };

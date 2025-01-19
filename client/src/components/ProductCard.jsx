@@ -1,6 +1,19 @@
 import { ShoppingCart } from "lucide-react";
+import toast from "react-hot-toast";
+import axios from "../lib/axios";
+import { useCart } from "../contexts/CartContext";
 
 function ProductCard({ product }) {
+  const { setCart } = useCart();
+  async function handleAddToCart() {
+    try {
+      const res = await axios.post("/cart", { productId: product._id });
+      toast.success(res.data.message);
+      setCart(res.data.data);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
   return (
     <div className="flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg">
       <div className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
@@ -26,7 +39,7 @@ function ProductCard({ product }) {
         <button
           className="flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-center text-sm font-medium
            text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300"
-          //   onClick={handleAddToCart}
+          onClick={handleAddToCart}
         >
           <ShoppingCart size={22} className="mr-2" />
           Add to cart
