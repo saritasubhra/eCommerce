@@ -94,22 +94,22 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const addToCart = async (req, res, next) => {
-  try {
-    const user = await User.findByIdAndDelete(req.params.userID);
+// const addToCart = async (req, res, next) => {
+//   try {
+//     const user = await User.findByIdAndDelete(req.params.userID);
 
-    if (!user) {
-      return next(new AppError("No user found with that ID", 404));
-    }
+//     if (!user) {
+//       return next(new AppError("No user found with that ID", 404));
+//     }
 
-    res.status(200).json({
-      status: "success",
-      message: "User deleted successfully",
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+//     res.status(200).json({
+//       status: "success",
+//       message: "User deleted successfully",
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 module.exports = {
   getAllUsers,
@@ -117,5 +117,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  addToCart,
+  // addToCart,
 };

@@ -12,10 +12,10 @@ const globalErrorHandler = (err, req, res, next) => {
     const field = err.keyValue.name || err.keyValue.email;
     err = new AppError(`Duplicate field value: ${field}`, 400);
   }
-  if (err.name === "ValidationError") {
-    const messages = Object.values(err.errors).map((el) => el.message);
-    err = new AppError(`Invalid input data: ${messages.join(" ")}`, 400);
-  }
+  // if (err.name === "ValidationError") {
+  //   const messages = Object.values(err.errors).map((el) => el.message);
+  //   err = new AppError(`Invalid input data: ${messages.join(" ")}`, 400);
+  // }
 
   if (err.name === "JsonWebTokenError" || err.name === "TokenExpiredError") {
     err = new AppError("Please log in again", 401);
@@ -25,6 +25,7 @@ const globalErrorHandler = (err, req, res, next) => {
     status: err.status,
     message: err.message,
     error: err,
+    stack: err.stack,
   });
 };
 
