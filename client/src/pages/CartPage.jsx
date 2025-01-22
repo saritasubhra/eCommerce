@@ -2,9 +2,13 @@ import { motion } from "framer-motion";
 import EmptyCartUI from "../components/EmptyCartUI";
 import { useCart } from "../contexts/CartContext";
 import CartItem from "../components/CartItem";
+import { useEffect } from "react";
 
 function CartPage() {
-  const { cart } = useCart();
+  const { cart, fetchCartItems } = useCart();
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
   return (
     <div className="py-8 md:py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -15,7 +19,7 @@ function CartPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            {cart.length === 0 ? (
+            {!cart.length ? (
               <EmptyCartUI />
             ) : (
               <div className="space-y-6">
