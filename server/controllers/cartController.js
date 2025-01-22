@@ -1,3 +1,5 @@
+const User = require("../models/userModel");
+
 const addToCart = async (req, res, next) => {
   try {
     const { productId } = req.body;
@@ -26,16 +28,47 @@ const addToCart = async (req, res, next) => {
 
 const getCartItems = async (req, res, next) => {
   try {
-    const { cartItems } = req.user;
+    const userdata = await User.findById(req.user._id).populate({
+      path: "cartItems.productId",
+      select: "prodname image price",
+    });
 
     res.status(200).json({
       status: "success",
-      results: cartItems.length,
-      data: cartItems,
+      results: userdata.cartItems.length,
+      data: userdata.cartItems,
     });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { addToCart, getCartItems };
+const updateQuantity = async (req, res, next) => {
+  try {
+    const { productId, quantity } = req.body;
+    const { cartItems } = req.user;
+    const { user } = req;
+
+    const product = cartItems.find(
+      (item) => productId === item.productId.toString()
+    );
+
+    if (product.quantity === 1 && quantity === -1) {
+      user.cartItems = user.cartItems.filter(
+        (item) => productId === item.productId.toString()
+      );
+    } else {
+      product.quantity += quantity;
+    }
+
+    await user.save({ validateBeforeSave: false });
+    res.status(200).json({
+      status: "success",
+      message: "Quantity updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { addToCart, getCartItems, updateQuantity };

@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import { useAuth } from "./contexts/AuthContext";
 import AdminDashboard from "./pages/AdminDashboard";
 import Category from "./pages/Category";
+import CartPage from "./pages/CartPage";
 
 function App() {
   const { auth } = useAuth();
@@ -34,6 +35,10 @@ function App() {
             />
             <Route path="/dashboard" element={<AdminDashboard />} />
             <Route path="/category/:category" element={<Category />} />
+            <Route
+              path="/cart"
+              element={auth ? <CartPage /> : <Navigate to="/login" />}
+            />
           </Routes>
         </div>
         <Toaster />

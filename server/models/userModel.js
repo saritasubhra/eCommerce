@@ -39,6 +39,7 @@ const userSchema = new mongoose.Schema(
       },
     },
     cartItems: [
+      //.populate({path: "cartItems.productId",select: "prodname image",});
       {
         quantity: {
           type: Number,
